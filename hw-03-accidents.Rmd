@@ -91,13 +91,43 @@ accidents %>%
   )
 ```
 
+```{r accidents-daily, eval = TRUE, echo = FALSE, fig.fullwidth = TRUE}
+accidents %>%
+  mutate(day_of_week_type = if_else(day_of_week %in% c("Saturday", "Sunday"), "Weekend", "Weekday")) %>%
+  ggplot(aes(x = time, fill = severity)) +
+  geom_density(alpha = 0.5) +
+  facet_wrap(~day_of_week_type, ncol = 1) +
+  theme_minimal() +
+  scale_fill_viridis_d() +
+  labs(
+    title = "Number of accidents throughout the day",
+    subtitle = "By day of week and severity",
+    x = "Time of day",
+    y = "Density",
+    fill = "Severity"
+  )
+```
+`The mutate function sets two sections: weekend and weekday. These are the days that the accidents take place. the if_else code has the format (condition, true, false), so in this case, if the accident happened on Saturday or Sunday, it's listed as weekend, and if it was on another day, weekday.` 
+`The ggplot sets x = the time of day that an accident happened. The fill color is the severity of the accident, so fatal accidents are purple, serious blue, and slight yellow. This helps us see the distribution of damage. There are more fatal accidents in the early hours of the morning or around noon on weekdays, and very few on weekends. We see more slight accidents around 5 on weekdays and 4 on weekends.`
+
+
 🧶 ✅ ⬆️ Knit, *commit, and push your changes to GitHub with an appropriate commit message. Make sure to commit and push all changed files so that your Git pane is cleared up afterwards.*
 
 4.  Create another data visualization based on these data and interpret it. You can choose any variables and any type of visualization you like, but it must have at least three variables, e.g. a scatterplot of x vs. y isn't enough, but if points are colored by z, that's fine. In your answer, don't forget to label your R chunk as well (where it says `label-me-2`).
 
-```{r label-me-2, eval = TRUE, echo = FALSE, fig.fullwidth = TRUE}
-
+```{r graph, eval = TRUE, echo = FALSE, fig.fullwidth = TRUE}
+accidents %>%
+  ggplot(aes(x = speed_limit, y = vehicles, color = road_surface)) +
+  geom_point()+
+  labs(
+    Title = "Speed limit and number of vehicles in accidents",
+    Subtitle = "Taking into account the road surface",
+    x = "Speed Limit",
+    y = "Number of Vehicles Involved",
+    color = "Road Surface"
+  )
 
 ```
+`This graph shows the correlation between speed limit and number of vehicles involved in the accident, as well as the road surface. We can see that a majority of higher-speed crashes involve wet or damp ground, but a big amount still include dry. Not many include snow, frost, or ice, suggesting that people drive more cautiously in that weather or just stay home.`
 
 🧶 ✅ ⬆️ Knit, *commit, and push your changes to GitHub with an appropriate commit message. Make sure to commit and push all changed files so that your Git pane is cleared up afterwards and review the md document on GitHub to make sure you're happy with the final state of your work.* Once you decide that you are done with the lab, choose the knit drop down and select `Knit to tufte_handout` to generate a pdf. Download and submit that pdf to Canvas.
